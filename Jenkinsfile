@@ -32,14 +32,14 @@ pipeline {
              sh './vendor/bin/phpunit'
       } 
   }
-  stage('Code Analysis') {
-  steps {
-        sh 'phploc app/ --log-csv build/logs/phploc.csv'
+    stage('Code Analysis') {
+      steps {
+         sh 'phploc app/ --log-csv build/logs/phploc.csv'
 
   }
 }
 
-stage('Plot Code Coverage Report') {
+    stage('Plot Code Coverage Report') {
       steps {
 
             plot csvFileName: 'plot-396c4a6b-b573-41e5-85d8-73613b2ffffb.csv', csvSeries: [[displayTableFlag: false, exclusionValues: 'Lines of Code (LOC),Comment Lines of Code (CLOC),Non-Comment Lines of Code (NCLOC),Logical Lines of Code (LLOC)                          ', file: 'build/logs/phploc.csv', inclusionFlag: 'INCLUDE_BY_STRING', url: '']], group: 'phploc', numBuilds: '100', style: 'line', title: 'A - Lines of code', yaxis: 'Lines of Code'
@@ -57,7 +57,7 @@ stage('Plot Code Coverage Report') {
       }
     }
 
-   stage('SonarQube Quality Gate') {
+    stage('SonarQube Quality Gate') {
       when { branch pattern: "^develop*|^hotfix*|^release*|^main*", comparator: "REGEXP"}
         environment {
             scannerHome = tool 'SonarQubeScanner'
@@ -72,11 +72,8 @@ stage('Plot Code Coverage Report') {
         }
     }
 
-        }
-    }
-
     stage ('Package Artifact') {
-    steps {
+       steps {
             sh 'zip -qr php-todo.zip ${WORKSPACE}/*'
      }
     }
@@ -108,5 +105,10 @@ stage('Plot Code Coverage Report') {
     }
   }
 
-}
-}
+        }
+    }
+
+    
+
+
+
